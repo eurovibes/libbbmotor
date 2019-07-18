@@ -1,0 +1,11 @@
+libbbmotor.so.1 libbbmotor1 #MINVER#
+* Build-Depends-Package: libbbmotor-dev
+ gpio_init@Base 0.1.0
+ gpio_release@Base 0.1.0
+ motorcape_close@Base 0.1.0
+ motorcape_init@Base 0.1.0
+ motorcape_set_pwm@Base 0.1.0
+ motorcape_stepper_dir@Base 0.1.0
+ motorcape_stepper_init@Base 0.1.0
+ motorcape_stepper_speed@Base 0.1.0
+ motorcape_stepper_steps@Base 0.1.0
