@@ -5,8 +5,10 @@
 \#*#
 
 autom4te.cache/
+doxydoc/
 m4/
 
+*.doxy
 *.la
 *.lo
 *.o

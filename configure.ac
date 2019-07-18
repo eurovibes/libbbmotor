@@ -37,6 +37,7 @@ AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.17])
 
 AC_OUTPUT([Makefile
+	libbbmotor.doxy
 	libbbmotor-uninstalled.pc
 	libbbmotor.pc
 	po/Makefile.in])

@@ -25,7 +25,14 @@ include_HEADERS = bbmotor.h
 
 libbbmotor_la_LDFLAGS = -version-info 1:0:0
 
-EXTRA_DIST = ChangeLog-from-git libbbmotor.pc.in libbbmotor-uninstalled.pc.in
+EXTRA_DIST = ChangeLog-from-git libbbmotor.doxy.in libbbmotor.pc.in \
+	libbbmotor-uninstalled.pc.in
+
+html-local:
+	doxygen libbbmotor.doxy
+
+mostlyclean-local:
+	-rm -rf doxydoc/
 
 DISTCLEANFILES = *~ po/*~
 
