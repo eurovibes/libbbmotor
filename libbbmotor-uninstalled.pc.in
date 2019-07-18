@@ -1,0 +1,5 @@
+Name: libbbmotor Uninstalled
+Description: Beaglebone Motor Cape support library, Not Installed
+Version: @VERSION@
+Libs: ${pc_top_builddir}/${pcfiledir}/libbbmotor.la
+Cflags: -I${pc_top_builddir}/${pcfiledir}

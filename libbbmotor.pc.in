@@ -1,0 +1,9 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+includedir=@includedir@
+
+Name: libbbmotor
+Description: Beaglebone Motor Cape support library
+Version: @VERSION@
+Libs: -lbbmotor
+Cflags: -I${includedir}
