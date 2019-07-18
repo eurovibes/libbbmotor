@@ -1,6 +1,8 @@
 #ifndef _BBMOTOR_H_
 #define _BBMOTOR_H_
 
+#include <stdint.h>
+
 struct motorcape_t;
 typedef struct motorcape_t *motorcape;
 

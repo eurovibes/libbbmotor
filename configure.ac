@@ -31,6 +31,9 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 dnl Checks for library functions.
 
 dnl pkg-config section
+PKG_CHECK_MODULES(GPIO, libgpiod,,
+  AC_MSG_ERROR([libgpiod not found.])
+)
 
 dnl i18n makros.
 AM_GNU_GETTEXT([external])

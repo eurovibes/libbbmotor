@@ -1,4 +1,4 @@
-#ifdef CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
@@ -19,11 +19,7 @@
 
 #include "bbmotor.h"
 #include "com.h"
-
-struct motorcape_t
-{
-	int i2c_fd;
-};
+#include "internal.h"
 
 static ssize_t i2c_write_u8 (int fd, uint8_t reg, uint8_t val)
 {
@@ -77,19 +73,24 @@ motorcape motorcape_init (uint8_t addr)
 	if (!han)
 		return NULL;
 
-	han->i2c_fd = open ("/dev/i2c-2", O_RDWR);
-	if (han->i2c_fd < 0)
+	if (gpio_init (han))
 		goto out;
 
+	han->i2c_fd = open ("/dev/i2c-2", O_RDWR);
+	if (han->i2c_fd < 0)
+		goto out_release;
+
 	if (ioctl(han->i2c_fd, I2C_SLAVE, addr) < 0)
-	{
 		goto out_close;
-	}
 
 	return han;
 
 out_close:
 	close (han->i2c_fd);
+
+out_release:
+	gpio_release (han);
+
 out:
 	free (han);
 	return NULL;
@@ -102,6 +103,9 @@ int motorcape_close (motorcape han)
 		errno = EINVAL;
 		return -1;
 	}
+
+	if (gpio_release (han))
+		return -1;
 
 	return close (han->i2c_fd);
 }
