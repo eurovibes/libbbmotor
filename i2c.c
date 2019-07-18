@@ -21,6 +21,27 @@
 #include "com.h"
 #include "internal.h"
 
+/**
+ * @mainpage
+ *
+ * This manual documents the libbbmotor C API.
+ */
+
+/**
+ * @internal
+ * @defgroup libbbmotor_i2c libbbmotor internal i2c helper functions
+ * @ingroup libbbmotor
+ * @brief i2c helper functions
+ * @{
+ */
+
+/**
+ * write one byte to the motor cape configuration area
+ * @internal
+ * @param fd I2C file descriptor
+ * @param reg motor cape configuration register
+ * @param val register value
+ */
 static ssize_t i2c_write_u8 (int fd, uint8_t reg, uint8_t val)
 {
 	uint8_t buf [3];
@@ -32,6 +53,13 @@ static ssize_t i2c_write_u8 (int fd, uint8_t reg, uint8_t val)
 	return (write (fd, buf, 3) != 3);
 }
 
+/**
+ * write one word to the motor cape configuration area
+ * @internal
+ * @param fd I2C file descriptor
+ * @param reg motor cape configuration register
+ * @param val register value
+ */
 static ssize_t i2c_write_u16 (int fd, uint8_t reg, uint16_t val)
 {
 	uint8_t buf [4];
@@ -44,6 +72,13 @@ static ssize_t i2c_write_u16 (int fd, uint8_t reg, uint16_t val)
 	return (write (fd, buf, 4) != 4);
 }
 
+/**
+ * write one long word to the motor cape configuration area
+ * @internal
+ * @param fd I2C file descriptor
+ * @param reg motor cape configuration register
+ * @param val register value
+ */
 static ssize_t i2c_write_u32 (int fd, uint8_t reg, uint32_t val)
 {
 	uint8_t buf [6];
@@ -56,6 +91,20 @@ static ssize_t i2c_write_u32 (int fd, uint8_t reg, uint32_t val)
 	return (write (fd, buf, 6) != 6);
 }
 
+/** @} */
+
+/**
+ * @defgroup libbbmotor_public libbbmotor public available functions
+ * @ingroup libbbmotor
+ * @brief public functions
+ * @{
+ */
+
+/**
+ * initialize motor bridge cape
+ * @param addr I2C address of the cape
+ * @returns handler on success or NULL on failure with errno set
+ */
 motorcape motorcape_init (uint8_t addr)
 {
 	struct motorcape_t *han;
@@ -96,6 +145,11 @@ out:
 	return NULL;
 }
 
+/**
+ * close motor bridge cape
+ * @param han motor bridge cape handler
+ * @returns 0 on success or -1 on failure with errno set
+ */
 int motorcape_close (motorcape han)
 {
 	if (!han)
@@ -110,6 +164,12 @@ int motorcape_close (motorcape han)
 	return close (han->i2c_fd);
 }
 
+/**
+ * set PWM frequency
+ * @param han motor bridge cape handler
+ * @param freq PWM frequency
+ * @returns 0 on success or -1 on failure with errno set
+ */
 int motorcape_set_pwm (motorcape han, uint32_t freq)
 {
 	if (!han)
@@ -126,6 +186,13 @@ int motorcape_set_pwm (motorcape han, uint32_t freq)
 	return 0;
 }
 
+/**
+ * initialize stepper port
+ * @param han motor bridge cape handler
+ * @param port stepper port
+ * @param duty stepper motor duty cycle in us
+ * @returns 0 on success or -1 on failure with errno set
+ */
 int motorcape_stepper_init (motorcape han, uint8_t port, uint16_t duty)
 {
 	uint8_t reg;
@@ -160,6 +227,13 @@ int motorcape_stepper_init (motorcape han, uint8_t port, uint16_t duty)
 	return 0;
 }
 
+/**
+ * set stepper rotating direction
+ * @param han motor bridge cape handler
+ * @param port stepper port
+ * @param dir rotating direction
+ * @returns 0 on success or -1 on failure with errno set
+ */
 int motorcape_stepper_dir (motorcape han, uint8_t port, uint8_t dir)
 {
 	if (!han || --port > 1)
@@ -181,6 +255,13 @@ int motorcape_stepper_dir (motorcape han, uint8_t port, uint8_t dir)
 	return 0;
 }
 
+/**
+ * set stepper motor speed
+ * @param han motor bridge cape handler
+ * @param port stepper port
+ * @param speed stepper motor cycle speed in Hz
+ * @returns 0 on success or -1 on failure with errno set
+ */
 int motorcape_stepper_speed (motorcape han, uint8_t port, uint32_t speed)
 {
 	if (!han || --port > 1)
@@ -202,6 +283,13 @@ int motorcape_stepper_speed (motorcape han, uint8_t port, uint32_t speed)
 	return 0;
 }
 
+/**
+ * perform stepper motor steps
+ * @param han motor bridge cape handler
+ * @param port stepper port
+ * @param steps number of stepper motor steps to perform
+ * @returns 0 on success or -1 on failure with errno set
+ */
 int motorcape_stepper_steps (motorcape han, uint8_t port, uint32_t steps)
 {
 	if (!han || --port > 1)
@@ -222,3 +310,5 @@ int motorcape_stepper_steps (motorcape han, uint8_t port, uint32_t steps)
 
 	return 0;
 }
+
+/** @} */

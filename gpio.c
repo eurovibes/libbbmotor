@@ -9,6 +9,20 @@
 #include "bbmotor.h"
 #include "internal.h"
 
+/**
+ * @internal
+ * @defgroup libbbmotor_gpio libbbmotor internal GPIO helper functions
+ * @ingroup libbbmotor
+ * @brief GPIO helper functions
+ * @{
+ */
+
+/**
+ * initialize GPIO access
+ * @internal
+ * @param han motor bridge cape handler
+ * @returns 0 on success or -1 on failure with errno set
+ */
 int gpio_init (struct motorcape_t *han)
 {
 	struct gpiod_chip *chip1, *chip3;
@@ -56,6 +70,12 @@ out:
 	return -1;
 }
 
+/**
+ * release GPIO access
+ * @internal
+ * @param han motor bridge cape handler
+ * @returns 0 on success or -1 on failure with errno set
+ */
 int gpio_release (struct motorcape_t *han)
 {
 	if (!han)
@@ -69,3 +89,5 @@ int gpio_release (struct motorcape_t *han)
 
 	return 0;
 }
+
+/** @} */
