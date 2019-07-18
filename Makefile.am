@@ -25,7 +25,7 @@ include_HEADERS = bbmotor.h
 
 libbbmotor_la_LDFLAGS = -version-info 1:0:0
 
-EXTRA_DIST = ChangeLog-from-git libbbmotor.doxy.in libbbmotor.pc.in \
+EXTRA_DIST = ChangeLog-from-git README.md libbbmotor.doxy.in libbbmotor.pc.in \
 	libbbmotor-uninstalled.pc.in
 
 html-local:

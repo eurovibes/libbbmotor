@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-2.1
+// Copyright (C) 2019 Benedikt Spranger <b.spranger@linutronix.de>
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: LGPL-2.1 */
+/* Copyright (C) 2019 Benedikt Spranger <b.spranger@linutronix.de> */
+
 #ifndef INTERNAL_H
 #define INTERNAL_H
 
