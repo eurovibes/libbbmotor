@@ -1,0 +1,18 @@
+dist: bionic
+
+before_install:
+  - sudo apt-get install -y autopoint libgpiod-dev
+addons:
+  apt:
+    update: true
+
+language: c
+compiler:
+  - clang
+  - gcc
+
+script:
+  - ./autogen.sh
+  - ./configure
+  - make
+  - make distcheck
