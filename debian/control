@@ -10,6 +10,7 @@ Section: libs
 
 Package: libbbmotor-dev
 Section: libdevel
+Multi-Arch: same
 Architecture: any
 Depends: libbbmotor1 (= ${binary:Version}), ${misc:Depends}
 Description: Seeed BeagleBone motor bride cape access library
@@ -26,6 +27,7 @@ Description: Seeed BeagleBone motor bride cape access library
  (Development files)
 
 Package: libbbmotor1
+Multi-Arch: same
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Seeed Beaglebone motor bridge cape access library
@@ -39,3 +41,13 @@ Description: Seeed Beaglebone motor bridge cape access library
  by I2C or UART interface.
  .
  libbbmotor provides a C API for a convenient access and handling.
+
+Package: stepper
+Section: utils
+Multi-Arch: foreign
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Seeed Beaglebone motor bridge cape access library usage example
+ The small example application stepper is using the libbbmotor library.
+ The application moves two stepper motors around like the sweep hand of an
+ analog clock.
