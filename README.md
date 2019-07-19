@@ -1,3 +1,6 @@
+Master Branch: [![Build Status](https://travis-ci.com/eurovibes/libbbmotor.svg?branch=master)](https://travis-ci.com/eurovibes/libbbmotor)
+Debian package: [![Build Status](https://travis-ci.com/eurovibes/libbbmotor.svg?branch=debian%2Fsid)](https://travis-ci.com/eurovibes/libbbmotor)
+
 # libbbmotor - A Beaglebone Motor Bridge Cape support library
 
 The Motor Bridge Cape features bi-directional motor control using two
