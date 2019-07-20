@@ -15,7 +15,7 @@
 /**
  * @internal
  * @defgroup libbbmotor_gpio libbbmotor internal GPIO helper functions
- * @ingroup libbbmotor
+ * @ingroup libbbmotor_internal
  * @brief GPIO helper functions
  * @{
  */
@@ -60,6 +60,7 @@ int gpio_init (struct motorcape_t *han)
 	gpiod_line_set_value (han->nrst, 0);
 	usleep (50000);
 	gpiod_line_set_value (han->nrst, 1);
+	usleep (10000);
 
 	return 0;
 

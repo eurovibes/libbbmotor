@@ -1,5 +1,5 @@
 dnl Every other copy of the package version number gets its value from here
-AC_INIT(libbbmotor, 0.1.0, b.spranger@linutronix.de)
+AC_INIT(libbbmotor, 0.1.1, b.spranger@linutronix.de)
 AM_INIT_AUTOMAKE
 
 dnl create a config.h file (Automake will add -DHAVE_CONFIG_H)

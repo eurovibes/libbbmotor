@@ -3,14 +3,19 @@ SUBDIRS = po
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbbmotor.pc
 
-bin_PROGRAMS = stepper
-stepper_SOURCES = stepper.c
+bin_PROGRAMS = stepper testservo
+
+stepper_SOURCES = stepper.c stepper.1
 stepper_CFLAGS = -O3 -Wall -Wextra -Werror -g
 stepper_LDADD = libbbmotor.la
 
+testservo_SOURCES = testservo.c testservo.1
+testservo_CFLAGS = -O3 -Wall -Wextra -Werror -g
+testservo_LDADD = libbbmotor.la
+
 lib_LTLIBRARIES = libbbmotor.la
-libbbmotor_la_SOURCES = i2c.c gpio.c com.h internal.h
-libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@
+libbbmotor_la_SOURCES = core.c gpio.c i2c.c motor.c servo.c com.h internal.h
+libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@ -fvisibility=hidden
 libbbmotor_la_LIBADD = @GPIO_LIBS@
 include_HEADERS = bbmotor.h
 
@@ -33,6 +38,8 @@ html-local:
 
 mostlyclean-local:
 	-rm -rf doxydoc/
+
+man_MANS = stepper.1 testservo.1
 
 DISTCLEANFILES = *~ po/*~
 

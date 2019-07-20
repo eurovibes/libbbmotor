@@ -6,6 +6,8 @@
 
 #include <gpiod.h>
 
+#define EXPORT __attribute__ ((visibility ("default")))
+
 struct motorcape_t
 {
 	int i2c_fd;
@@ -15,5 +17,9 @@ struct motorcape_t
 
 int gpio_init (struct motorcape_t *han);
 int gpio_release (struct motorcape_t *han);
+
+ssize_t i2c_write_u8 (int fd, uint8_t reg, uint8_t val);
+ssize_t i2c_write_u16 (int fd, uint8_t reg, uint16_t val);
+ssize_t i2c_write_u32 (int fd, uint8_t reg, uint32_t val);
 
 #endif /* INTERNAL_H */
