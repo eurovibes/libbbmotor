@@ -1,7 +1,7 @@
 dist: bionic
 
 before_install:
-  - sudo apt-get install -y autopoint libgpiod-dev
+  - sudo apt-get install -y autopoint doxygen libgpiod-dev
 addons:
   apt:
     update: true
@@ -16,3 +16,16 @@ script:
   - ./configure
   - make
   - make distcheck
+
+after_success:
+  - make html
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: doxydoc/html/
+  github_token: $GITHUB_TOKEN
+  keep_history: false
+  verbose: true
+  on:
+    branch: master
