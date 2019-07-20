@@ -42,7 +42,7 @@
  * @param addr I2C address of the cape
  * @returns handler on success or NULL on failure with errno set
  */
-motorcape motorcape_init (uint8_t addr)
+EXPORT motorcape motorcape_init (uint8_t addr)
 {
 	struct motorcape_t *han;
 
@@ -87,7 +87,7 @@ out:
  * @param han motor bridge cape handler
  * @returns 0 on success or -1 on failure with errno set
  */
-int motorcape_close (motorcape han)
+EXPORT int motorcape_close (motorcape han)
 {
 	if (!han)
 	{
@@ -107,7 +107,7 @@ int motorcape_close (motorcape han)
  * @param freq PWM frequency
  * @returns 0 on success or -1 on failure with errno set
  */
-int motorcape_set_pwm (motorcape han, uint32_t freq)
+EXPORT int motorcape_set_pwm (motorcape han, uint32_t freq)
 {
 	if (!han)
 	{

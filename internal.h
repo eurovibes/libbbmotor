@@ -6,6 +6,8 @@
 
 #include <gpiod.h>
 
+#define EXPORT __attribute__ ((visibility ("default")))
+
 struct motorcape_t
 {
 	int i2c_fd;

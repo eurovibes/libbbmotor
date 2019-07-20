@@ -26,7 +26,7 @@
  * @param duty stepper motor duty cycle in us
  * @returns 0 on success or -1 on failure with errno set
  */
-int motorcape_stepper_init (motorcape han, uint8_t port, uint16_t duty)
+EXPORT int motorcape_stepper_init (motorcape han, uint8_t port, uint16_t duty)
 {
 	uint8_t reg;
 
@@ -67,7 +67,7 @@ int motorcape_stepper_init (motorcape han, uint8_t port, uint16_t duty)
  * @param dir rotating direction
  * @returns 0 on success or -1 on failure with errno set
  */
-int motorcape_stepper_dir (motorcape han, uint8_t port, uint8_t dir)
+EXPORT int motorcape_stepper_dir (motorcape han, uint8_t port, uint8_t dir)
 {
 	if (!han || --port > 1)
 	{
@@ -95,7 +95,7 @@ int motorcape_stepper_dir (motorcape han, uint8_t port, uint8_t dir)
  * @param speed stepper motor cycle speed in Hz
  * @returns 0 on success or -1 on failure with errno set
  */
-int motorcape_stepper_speed (motorcape han, uint8_t port, uint32_t speed)
+EXPORT int motorcape_stepper_speed (motorcape han, uint8_t port, uint32_t speed)
 {
 	if (!han || --port > 1)
 	{
@@ -123,7 +123,7 @@ int motorcape_stepper_speed (motorcape han, uint8_t port, uint32_t speed)
  * @param steps number of stepper motor steps to perform
  * @returns 0 on success or -1 on failure with errno set
  */
-int motorcape_stepper_steps (motorcape han, uint8_t port, uint32_t steps)
+EXPORT int motorcape_stepper_steps (motorcape han, uint8_t port, uint32_t steps)
 {
 	if (!han || --port > 1)
 	{

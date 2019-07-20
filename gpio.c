@@ -15,7 +15,7 @@
 /**
  * @internal
  * @defgroup libbbmotor_gpio libbbmotor internal GPIO helper functions
- * @ingroup libbbmotor
+ * @ingroup libbbmotor_internal
  * @brief GPIO helper functions
  * @{
  */
