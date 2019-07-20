@@ -4,11 +4,12 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbbmotor.pc
 
 bin_PROGRAMS = stepper testservo
-stepper_SOURCES = stepper.c
+
+stepper_SOURCES = stepper.c stepper.1
 stepper_CFLAGS = -O3 -Wall -Wextra -Werror -g
 stepper_LDADD = libbbmotor.la
 
-testservo_SOURCES = testservo.c
+testservo_SOURCES = testservo.c testservo.1
 testservo_CFLAGS = -O3 -Wall -Wextra -Werror -g
 testservo_LDADD = libbbmotor.la
 
@@ -37,6 +38,8 @@ html-local:
 
 mostlyclean-local:
 	-rm -rf doxydoc/
+
+man_MANS = stepper.1 testservo.1
 
 DISTCLEANFILES = *~ po/*~
 
