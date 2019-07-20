@@ -9,7 +9,7 @@ stepper_CFLAGS = -O3 -Wall -Wextra -Werror -g
 stepper_LDADD = libbbmotor.la
 
 lib_LTLIBRARIES = libbbmotor.la
-libbbmotor_la_SOURCES = i2c.c gpio.c com.h internal.h
+libbbmotor_la_SOURCES = core.c gpio.c i2c.c motor.c com.h internal.h
 libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@
 libbbmotor_la_LIBADD = @GPIO_LIBS@
 include_HEADERS = bbmotor.h
