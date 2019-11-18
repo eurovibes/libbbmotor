@@ -29,11 +29,22 @@
 stepper \- libbbmotor stepper motor example
 .SH SYNOPSIS
 .B stepper
+.RI [ option... ]
 .SH DESCRIPTION
 \fBstepper\fP performs a CW steps alternating on each stepper motor channel
-on a Seeed BeagleBone Motor Bridge Cape every 500 ms.
+on a Seeed BeagleBone Motor Bridge Cape every 500 ms by default.
 The main goal of \fBstepper\fP is a living documentation of the stepper
 functionality of \fBlibbbmotor\fP.
 .PP
+.SH OPTIONS
+.TP
+\fB\-d\fR, \fB\-\-duty\fR=\fIval\fR
+Set duty to <val> milliseconds
+.TP
+\fB\-p\fR, \fB\-\-priority\fR=\fIprio\fR
+Set SCHED_FIFO priority <prio>
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+Print more information
 .SH AUTHOR
 Benedikt Spranger
