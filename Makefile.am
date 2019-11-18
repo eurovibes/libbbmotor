@@ -46,7 +46,8 @@ DISTCLEANFILES = *~ po/*~
 MAINTAINERCLEANFILES = ABOUT-NLS ChangeLog INSTALL Makefile.in aclocal.m4 \
 	compile config.guess config.h.in config.rpath config.sub configure \
 	depcomp install-sh ltmain.sh m4/* missing po/Makefile.in.in \
-	po/Makevars.template po/Rules-quot po/*.header po/*.sed po/*.sin
+	po/Makevars.template po/Rules-quot po/*.header po/*pot po/*.sed \
+	po/*.sin
 
 ACLOCAL_AMFLAGS = -I m4
 
