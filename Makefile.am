@@ -6,11 +6,11 @@ pkgconfig_DATA = libbbmotor.pc
 bin_PROGRAMS = stepper testservo
 
 stepper_SOURCES = stepper.c stepper.1
-stepper_CFLAGS = -O3 -Wall -Wextra -Werror -g
+stepper_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
 stepper_LDADD = libbbmotor.la
 
 testservo_SOURCES = testservo.c testservo.1
-testservo_CFLAGS = -O3 -Wall -Wextra -Werror -g
+testservo_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
 testservo_LDADD = libbbmotor.la
 
 lib_LTLIBRARIES = libbbmotor.la
@@ -46,7 +46,8 @@ DISTCLEANFILES = *~ po/*~
 MAINTAINERCLEANFILES = ABOUT-NLS ChangeLog INSTALL Makefile.in aclocal.m4 \
 	compile config.guess config.h.in config.rpath config.sub configure \
 	depcomp install-sh ltmain.sh m4/* missing po/Makefile.in.in \
-	po/Makevars.template po/Rules-quot po/*.header po/*.sed po/*.sin
+	po/Makevars.template po/Rules-quot po/*.header po/*pot po/*.sed \
+	po/*.sin
 
 ACLOCAL_AMFLAGS = -I m4
 
