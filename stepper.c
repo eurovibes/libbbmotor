@@ -18,6 +18,15 @@
 
 #include "bbmotor.h"
 
+#if ENABLE_NLS
+#include <libintl.h>
+#define _(Text) gettext (Text)
+#else
+#define textdomain(Domain)
+#define _(Text) Text
+#endif
+#define N_(Text) Text
+
 static uint32_t sec_steps [3] = {6, 8, 6};
 static int stop;
 
@@ -33,12 +42,16 @@ int main (void)
 	motorcape han;
 	int i, ret = 1;
 
+	setlocale (LC_ALL, "");
+	bindtextdomain (PACKAGE, LOCALEDIR);
+	textdomain (PACKAGE);
+
 	mlockall (MCL_CURRENT | MCL_FUTURE);
 	param.sched_priority = 90;
 
 	if (sched_setscheduler (0, SCHED_FIFO, &param) < 0)
 	{
-		perror ("set priority failed");
+		perror (_("Set priority failed. Abort."));
 		return 1;
 	}
 
@@ -50,13 +63,13 @@ int main (void)
 	han = motorcape_init (0x4b);
 	if (!han)
 	{
-		perror ("motorcape init failed.");
+		perror (_("The motorcape initialization failed. Abort."));
 		return 1;
 	}
 
 	if (motorcape_set_pwm (han, 10000))
 	{
-		perror ("PWM initialization failed.");
+		perror (_("The PWM initialization failed. Abort."));
 		goto out;
 	}
 
@@ -64,26 +77,26 @@ int main (void)
 	{
 		if (motorcape_stepper_init (han, i, 1000))
 		{
-			perror ("stepper initialization failed.");
+			perror (_("The stepper initialization failed. Abort."));
 			goto out;
 		}
 
 		if (motorcape_stepper_speed (han, i, 2000))
 		{
-			perror ("Init stepper A speed failed.");
+			perror (_("Cannot set stepper A speed. Abort."));
 			goto out;
 		}
 
 		if (motorcape_stepper_dir (han, i, 1))
 		{
-			perror ("Init stepper A dir failed.");
+			perror (_("Cannot set stepper A dir. Abort."));
 			goto out;
 		}
 	}
 
 	if (clock_gettime (CLOCK_MONOTONIC, &next))
 	{
-		perror ("get time failed.");
+		perror (_("Get current time failed. Abort"));
 		goto out;
 	}
 
@@ -97,7 +110,7 @@ int main (void)
 		if (motorcape_stepper_steps (han, 1,
 					     sec_steps [next.tv_sec %3]))
 		{
-			perror ("Init stepper A steps failed.");
+			perror (_("Stepper A failed to step. Abort."));
 			goto out;
 		}
 
@@ -105,10 +118,10 @@ int main (void)
 		if (motorcape_stepper_steps (han, 2,
 					     sec_steps [next.tv_sec %3]))
 		{
-			perror ("Init stepper A steps failed.");
+			perror (_("Stepper B failed to step. Abort."));
 			goto out;
 		}
-		fprintf (stderr, "*");
+		fprintf (stderr, N_("*"));
 		next.tv_sec++;
 	}
 
