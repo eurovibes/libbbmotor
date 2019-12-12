@@ -121,7 +121,7 @@ EXPORT int motorcape_stepper_init (motorcape han, uint8_t port, uint16_t duty)
  * @param index motor port (0 to 3)
  * @returns 0 on success or -1 on failure with errno set
  */
-static int reset_port (motorcape han, uint8_t index)
+int reset_port (motorcape han, uint8_t index)
 {
 	uint8_t port, dir;
 

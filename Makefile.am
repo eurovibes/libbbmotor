@@ -14,7 +14,8 @@ testservo_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
 testservo_LDADD = libbbmotor.la
 
 lib_LTLIBRARIES = libbbmotor.la
-libbbmotor_la_SOURCES = core.c gpio.c i2c.c motor.c servo.c com.h internal.h
+libbbmotor_la_SOURCES = core.c dcm.c gpio.c i2c.c motor.c servo.c com.h \
+	internal.h
 libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@ -fvisibility=hidden \
 	@PTHREAD_CFLAGS@
 libbbmotor_la_LIBADD = @GPIO_LIBS@ @PTHREAD_LIBS@

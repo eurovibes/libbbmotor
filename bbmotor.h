@@ -23,4 +23,10 @@ int motorcape_stepper_dir (motorcape han, uint8_t port, uint8_t dir);
 int motorcape_stepper_speed (motorcape han, uint8_t port, uint32_t speed);
 int motorcape_stepper_steps (motorcape han, uint8_t port, uint32_t steps);
 
+int motorcape_dcm_init (motorcape han, uint8_t port);
+int motorcape_dcm_release (motorcape han, uint8_t port);
+int motorcape_dcm_move (motorcape han, uint8_t index,
+			uint8_t dir, uint16_t speed);
+int motorcape_dcm_stop (motorcape han, uint8_t index);
+
 #endif /* _BBMOTOR_H_ */

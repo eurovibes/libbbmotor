@@ -36,4 +36,6 @@ ssize_t i2c_write_u8 (int fd, uint8_t reg, uint8_t val);
 ssize_t i2c_write_u16 (int fd, uint8_t reg, uint16_t val);
 ssize_t i2c_write_u32 (int fd, uint8_t reg, uint32_t val);
 
+int reset_port (motorcape han, uint8_t index);
+
 #endif /* INTERNAL_H */
