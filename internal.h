@@ -9,6 +9,7 @@
 #define EXPORT __attribute__ ((visibility ("default")))
 #define NUM_ELEM(x) (sizeof (x) / sizeof (*(x)))
 
+#define DEFAULT_FREQ	10000
 #define GUARD_TIME	5000
 
 enum port_state
@@ -22,6 +23,7 @@ struct motorcape_t
 {
 	enum port_state ports [4];
 	pthread_mutex_t lock;
+	uint32_t freq;
 	int i2c_fd;
 	struct gpiod_line *boot0;
 	struct gpiod_line *nrst;

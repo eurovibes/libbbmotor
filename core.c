@@ -81,6 +81,9 @@ EXPORT motorcape motorcape_init (uint8_t addr)
 	pthread_mutex_init (&han->lock, &lock_attr);
 	pthread_mutexattr_destroy(&lock_attr);
 
+	if (motorcape_set_pwm (han, DEFAULT_FREQ))
+		goto out_close;
+
 	return han;
 
 out_close:
@@ -140,7 +143,7 @@ EXPORT int motorcape_close (motorcape han)
 /**
  * set PWM frequency
  * @param han motor bridge cape handler
- * @param freq PWM frequency
+ * @param freq PWM frequency in Hz
  * @returns 0 on success or -1 on failure with errno set
  */
 EXPORT int motorcape_set_pwm (motorcape han, uint32_t freq)
@@ -155,6 +158,7 @@ EXPORT int motorcape_set_pwm (motorcape han, uint32_t freq)
 		return -1;
 
 	usleep (GUARD_TIME);
+	han->freq = freq;
 
 	return 0;
 }
