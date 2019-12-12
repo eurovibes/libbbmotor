@@ -21,6 +21,7 @@ AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
 dnl Checks for libraries.
+AX_PTHREAD(,AC_MSG_ERROR(Cannot continue: pthread library not found))
 
 dnl Checks for header files.
 AC_HEADER_STDC

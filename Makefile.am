@@ -15,8 +15,9 @@ testservo_LDADD = libbbmotor.la
 
 lib_LTLIBRARIES = libbbmotor.la
 libbbmotor_la_SOURCES = core.c gpio.c i2c.c motor.c servo.c com.h internal.h
-libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@ -fvisibility=hidden
-libbbmotor_la_LIBADD = @GPIO_LIBS@
+libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@ -fvisibility=hidden \
+	@PTHREAD_CFLAGS@
+libbbmotor_la_LIBADD = @GPIO_LIBS@ @PTHREAD_LIBS@
 include_HEADERS = bbmotor.h
 
 # 1) If the library source code has changed at all since the last update, then
