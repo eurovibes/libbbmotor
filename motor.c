@@ -50,12 +50,12 @@ EXPORT int motorcape_stepper_init (motorcape han, uint8_t port, uint16_t duty)
 	if (i2c_write_u8 (han->i2c_fd, port, TB_SPM))
 		return -1;
 
-	usleep (5000);
+	usleep (GUARD_TIME);
 
 	if (i2c_write_u16 (han->i2c_fd, reg, duty))
 		return 1;
 
-	usleep (5000);
+	usleep (GUARD_TIME);
 
 	return 0;
 }
@@ -83,7 +83,7 @@ EXPORT int motorcape_stepper_dir (motorcape han, uint8_t port, uint8_t dir)
 	if (i2c_write_u8 (han->i2c_fd, port, (dir) ? TB_CW : TB_CCW))
 		return -1;
 
-	usleep (5000);
+	usleep (GUARD_TIME);
 
 	return 0;
 }
@@ -111,7 +111,7 @@ EXPORT int motorcape_stepper_speed (motorcape han, uint8_t port, uint32_t speed)
 	if (i2c_write_u32 (han->i2c_fd, port, speed))
 		return 1;
 
-	usleep (5000);
+	usleep (GUARD_TIME);
 
 	return 0;
 }
@@ -139,7 +139,7 @@ EXPORT int motorcape_stepper_steps (motorcape han, uint8_t port, uint32_t steps)
 	if (i2c_write_u32 (han->i2c_fd, port, steps))
 		return 1;
 
-	usleep (5000);
+	usleep (GUARD_TIME);
 
 	return 0;
 }

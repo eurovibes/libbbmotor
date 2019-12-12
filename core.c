@@ -118,7 +118,7 @@ EXPORT int motorcape_set_pwm (motorcape han, uint32_t freq)
 	if (i2c_write_u16 (han->i2c_fd, CONFIG_TB_PWM_FREQ, freq))
 		return 1;
 
-	usleep (5000);
+	usleep (GUARD_TIME);
 
 	return 0;
 }

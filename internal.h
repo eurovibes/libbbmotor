@@ -8,6 +8,8 @@
 
 #define EXPORT __attribute__ ((visibility ("default")))
 
+#define GUARD_TIME	5000
+
 struct motorcape_t
 {
 	int i2c_fd;
