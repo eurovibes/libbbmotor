@@ -221,7 +221,17 @@ int main (int argc, char **argv)
 		next.tv_sec++;
 	}
 
-	ret = 0;
+	ret = motorcape_stepper_release (han, 1);
+	if (ret)
+	{
+		perror (_("Stepper A release failed."));
+		goto out;
+	}
+
+	ret = motorcape_stepper_release (han, 2);
+	if (ret)
+		perror (_("Stepper B release failed."));
+
 out:
 	motorcape_close (han);
 
