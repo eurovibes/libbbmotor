@@ -3,7 +3,11 @@ SUBDIRS = po
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbbmotor.pc
 
-bin_PROGRAMS = stepper testservo
+bin_PROGRAMS = dcmotor stepper testservo
+
+dcmotor_SOURCES = dcmotor.c dcmotor.1
+dcmotor_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
+dcmotor_LDADD = libbbmotor.la
 
 stepper_SOURCES = stepper.c stepper.1
 stepper_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
@@ -41,7 +45,7 @@ html-local:
 mostlyclean-local:
 	-rm -rf doxydoc/
 
-man_MANS = stepper.1 testservo.1
+man_MANS = dcmotor.1 stepper.1 testservo.1
 
 DISTCLEANFILES = *~ po/*~
 

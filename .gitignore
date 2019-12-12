@@ -30,6 +30,7 @@ config.rpath
 config.status
 config.sub
 configure
+dcmotor
 depcomp
 install-sh
 libtool
