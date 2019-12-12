@@ -7,6 +7,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,7 +45,9 @@
  */
 EXPORT motorcape motorcape_init (uint8_t addr)
 {
+	pthread_mutexattr_t lock_attr;
 	struct motorcape_t *han;
+	unsigned long i;
 
 	if (!addr)
 		addr = 0x4b;
@@ -69,6 +72,15 @@ EXPORT motorcape motorcape_init (uint8_t addr)
 	if (ioctl(han->i2c_fd, I2C_SLAVE, addr) < 0)
 		goto out_close;
 
+	for (i = 0; i < NUM_ELEM (han->ports); i++)
+		han->ports [i] = PORT_UNUSED;
+
+	pthread_mutexattr_init (&lock_attr);
+	pthread_mutexattr_setprotocol (&lock_attr, PTHREAD_PRIO_INHERIT);
+	pthread_mutexattr_setrobust (&lock_attr, PTHREAD_MUTEX_ROBUST);
+	pthread_mutex_init (&han->lock, &lock_attr);
+	pthread_mutexattr_destroy(&lock_attr);
+
 	return han;
 
 out_close:
@@ -89,9 +101,33 @@ out:
  */
 EXPORT int motorcape_close (motorcape han)
 {
+	unsigned long i;
+	int ret = 0;
+
 	if (!han)
 	{
 		errno = EINVAL;
+		return -1;
+	}
+
+	pthread_mutex_lock (&han->lock);
+	for (i = 0; i < NUM_ELEM (han->ports); i++)
+	{
+		if (han->ports [i])
+		{
+			errno = EBUSY;
+			ret = -1;
+			break;
+		}
+	}
+	pthread_mutex_unlock (&han->lock);
+	if (ret)
+		return -1;
+
+	ret = pthread_mutex_destroy (&han->lock);
+	if (ret)
+	{
+		errno = ret;
 		return -1;
 	}
 

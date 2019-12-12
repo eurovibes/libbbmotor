@@ -6,6 +6,7 @@
 #endif
 
 #include <errno.h>
+#include <pthread.h>
 #include <unistd.h>
 
 #include "bbmotor.h"
@@ -18,6 +19,57 @@
  * @brief stepper functions
  * @{
  */
+
+static int lock_motor_ports (motorcape han, uint8_t port)
+{
+	int ret = 0;
+	if (port > 1)
+	{
+		errno = EINVAL;
+		return -1;
+	}
+
+	pthread_mutex_lock (&han->lock);
+	if (han->ports [port*2] || han->ports [port*2 + 1])
+	{
+		errno = EBUSY;
+		ret = -1;
+	}
+	else
+	{
+		han->ports [port*2] = PORT_STM;
+		han->ports [port*2 + 1] = PORT_STM;
+	}
+	pthread_mutex_unlock (&han->lock);
+
+	return ret;
+}
+
+static int unlock_motor_ports (motorcape han, uint8_t port)
+{
+	int ret = 0;
+	if (port > 1)
+	{
+		errno = EINVAL;
+		return -1;
+	}
+
+	pthread_mutex_lock (&han->lock);
+	if (han->ports [port*2] != PORT_STM ||
+	    han->ports [port*2 + 1] != PORT_STM)
+	{
+		errno = EINVAL;
+		ret = -1;
+	}
+	else
+	{
+		han->ports [port*2] = PORT_UNUSED;
+		han->ports [port*2 + 1] = PORT_UNUSED;
+	}
+	pthread_mutex_unlock (&han->lock);
+
+	return ret;
+}
 
 /**
  * initialize stepper port
@@ -35,6 +87,9 @@ EXPORT int motorcape_stepper_init (motorcape han, uint8_t port, uint16_t duty)
 		errno = EINVAL;
 		return -1;
 	}
+
+	if (lock_motor_ports (han, port))
+		return -1;
 
 	if (!port)
 	{
@@ -123,6 +178,9 @@ EXPORT int motorcape_stepper_release (motorcape han, uint8_t port)
 		errno = EINVAL;
 		return -1;
 	}
+
+	if (unlock_motor_ports (han, port))
+		return -1;
 
 	if (!port)
 	{

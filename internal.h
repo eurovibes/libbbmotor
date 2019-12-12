@@ -7,11 +7,21 @@
 #include <gpiod.h>
 
 #define EXPORT __attribute__ ((visibility ("default")))
+#define NUM_ELEM(x) (sizeof (x) / sizeof (*(x)))
 
 #define GUARD_TIME	5000
 
+enum port_state
+{
+	PORT_UNUSED,
+	PORT_DCM,
+	PORT_STM,
+};
+
 struct motorcape_t
 {
+	enum port_state ports [4];
+	pthread_mutex_t lock;
 	int i2c_fd;
 	struct gpiod_line *boot0;
 	struct gpiod_line *nrst;
