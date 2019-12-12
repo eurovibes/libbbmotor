@@ -61,6 +61,95 @@ EXPORT int motorcape_stepper_init (motorcape han, uint8_t port, uint16_t duty)
 }
 
 /**
+ * reset motor port to defaults
+ * @param han motor bridge cape handler
+ * @param index motor port (0 to 3)
+ * @returns 0 on success or -1 on failure with errno set
+ */
+static int reset_port (motorcape han, uint8_t index)
+{
+	uint8_t port, dir;
+
+	switch (index)
+	{
+	case 0:
+		port = TB_1A_MODE;
+		dir = TB_1A_DIR;
+		break;
+
+	case 1:
+		port = TB_1A_MODE;
+		dir = TB_1A_DIR;
+		break;
+
+	case 2:
+		port = TB_1A_MODE;
+		dir = TB_1A_DIR;
+		break;
+
+	case 3:
+		port = TB_1A_MODE;
+		dir = TB_1A_DIR;
+		break;
+
+	default:
+		errno = EINVAL;
+		return -1;
+	}
+
+	if (i2c_write_u8 (han->i2c_fd, dir, TB_STOP))
+		return -1;
+	usleep (GUARD_TIME);
+
+	if (i2c_write_u8 (han->i2c_fd, port, TB_DCM))
+		return -1;
+	usleep (GUARD_TIME);
+
+	return 0;
+}
+
+/**
+ * release stepper port
+ * @param han motor bridge cape handler
+ * @param port stepper port
+ * @returns 0 on success or -1 on failure with errno set
+ */
+EXPORT int motorcape_stepper_release (motorcape han, uint8_t port)
+{
+	int ret;
+
+	if (!han || --port > 1)
+	{
+		errno = EINVAL;
+		return -1;
+	}
+
+	if (!port)
+	{
+		ret = reset_port (han, 0);
+		if (ret)
+			return ret;
+
+		ret = reset_port (han, 1);
+		if (ret)
+			return ret;
+	}
+	else
+	{
+		ret = reset_port (han, 2);
+		if (ret)
+			return ret;
+
+		ret = reset_port (han, 3);
+		if (ret)
+			return ret;
+
+	}
+
+	return 0;
+}
+
+/**
  * set stepper rotating direction
  * @param han motor bridge cape handler
  * @param port stepper port
