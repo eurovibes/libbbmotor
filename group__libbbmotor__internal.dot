@@ -1,0 +1,11 @@
+digraph "libbbmotor internal helper functions"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir=LR;
+  Node1 [label="libbbmotor internal\l GPIO helper functions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__libbbmotor__gpio.html",tooltip="GPIO helper functions. "];
+  Node0 [label="libbbmotor internal\l helper functions",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 [label="libbbmotor internal\l i2c helper functions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__libbbmotor__i2c.html",tooltip="i2c helper functions "];
+  Node0->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node0->Node2 [shape=plaintext, dir="back", style="solid"];
+}

@@ -1,0 +1,13 @@
+digraph "libbbmotor public available functions"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir=LR;
+  Node3 [label="libbbmotor servo functions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__libbbmotor__servo.html",tooltip="servo functions "];
+  Node2 [label="libbbmotor stepper\l functions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__libbbmotor__stepper.html",tooltip="stepper functions "];
+  Node1 [label="libbbmotor DC motor\l functions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__libbbmotor__dcm.html",tooltip="DC motor functions. "];
+  Node0 [label="libbbmotor public available\l functions",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node0->Node2 [shape=plaintext, dir="back", style="solid"];
+  Node0->Node3 [shape=plaintext, dir="back", style="solid"];
+}

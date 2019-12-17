@@ -1,0 +1,18 @@
+digraph "internal.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node2 [label="internal.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="core.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$core_8c.html"];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="dcm.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dcm_8c.html"];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="gpio.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gpio_8c.html"];
+  Node2 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="i2c.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$i2c_8c.html"];
+  Node2 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="motor.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$motor_8c.html"];
+  Node2 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="servo.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$servo_8c.html"];
+}
