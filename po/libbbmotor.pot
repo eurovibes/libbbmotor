@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Benedikt Spranger <b.spranger@linutronix.de>
+# This file is distributed under the same license as the libbbmotor package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: libbbmotor 0.1.3\n"
+"Report-Msgid-Bugs-To: b.spranger@linutronix.de\n"
+"POT-Creation-Date: 2019-12-17 23:40+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: stepper.c:49
+msgid "Set duty to <val> milliseconds"
+msgstr ""
+
+#: stepper.c:50
+msgid "Set SCHED_FIFO priority <prio>"
+msgstr ""
+
+#: stepper.c:51
+msgid "Print more information"
+msgstr ""
+
+#: stepper.c:62
+msgid "Test Beaglebone Motor Cape stepper motors."
+msgstr ""
+
+#: stepper.c:84
+#, c-format
+msgid ""
+"Duty %i out of range [1:999].\n"
+"Reset to 500 ms.\n"
+msgstr ""
+
+#: stepper.c:96
+#, c-format
+msgid ""
+"Priority %i out of range [1:99].\n"
+"Reset to 90.\n"
+msgstr ""
+
+#: stepper.c:137
+#, c-format
+msgid "%s paraleter list:\n"
+msgstr ""
+
+#: stepper.c:138
+#, c-format
+msgid "Duty: %d ms\n"
+msgstr ""
+
+#: stepper.c:139
+#, c-format
+msgid "Priority: %d\n"
+msgstr ""
+
+#: stepper.c:150
+msgid "Set priority failed. Abort."
+msgstr ""
+
+#: stepper.c:162
+msgid "The motorcape initialization failed. Abort."
+msgstr ""
+
+#: stepper.c:168
+msgid "The PWM initialization failed. Abort."
+msgstr ""
+
+#: stepper.c:176
+msgid "The stepper initialization failed. Abort."
+msgstr ""
+
+#: stepper.c:182
+msgid "Cannot set stepper A speed. Abort."
+msgstr ""
+
+#: stepper.c:188
+msgid "Cannot set stepper A dir. Abort."
+msgstr ""
+
+#: stepper.c:195
+msgid "Get current time failed. Abort"
+msgstr ""
+
+#: stepper.c:209
+msgid "Stepper A failed to step. Abort."
+msgstr ""
+
+#: stepper.c:217
+msgid "Stepper B failed to step. Abort."
+msgstr ""
+
+#: stepper.c:220
+#, c-format
+msgid "*"
+msgstr ""
+
+#: stepper.c:227
+msgid "Stepper A release failed."
+msgstr ""
+
+#: stepper.c:233
+msgid "Stepper B release failed."
+msgstr ""
+
+#: stepper.c:247
+#, c-format
+msgid ""
+"Written by %s.\n"
+"\n"
+msgstr ""
+
+#: stepper.c:248
+#, c-format
+msgid "Copyright (C) %s %s\n"
+msgstr ""
+
+#: stepper.c:249
+msgid ""
+"This program is free software; you may redistribute it under the terms of\n"
+"the GNU General Public License.  This program has absolutely no warranty.\n"
+msgstr ""
