@@ -3,7 +3,11 @@ SUBDIRS = po
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbbmotor.pc
 
-bin_PROGRAMS = stepper testservo
+bin_PROGRAMS = dcmotor stepper testservo
+
+dcmotor_SOURCES = dcmotor.c dcmotor.1
+dcmotor_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
+dcmotor_LDADD = libbbmotor.la
 
 stepper_SOURCES = stepper.c stepper.1
 stepper_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
@@ -14,9 +18,11 @@ testservo_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
 testservo_LDADD = libbbmotor.la
 
 lib_LTLIBRARIES = libbbmotor.la
-libbbmotor_la_SOURCES = core.c gpio.c i2c.c motor.c servo.c com.h internal.h
-libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@ -fvisibility=hidden
-libbbmotor_la_LIBADD = @GPIO_LIBS@
+libbbmotor_la_SOURCES = core.c dcm.c gpio.c i2c.c motor.c servo.c com.h \
+	internal.h
+libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@ -fvisibility=hidden \
+	@PTHREAD_CFLAGS@
+libbbmotor_la_LIBADD = @GPIO_LIBS@ @PTHREAD_LIBS@
 include_HEADERS = bbmotor.h
 
 # 1) If the library source code has changed at all since the last update, then
@@ -39,7 +45,7 @@ html-local:
 mostlyclean-local:
 	-rm -rf doxydoc/
 
-man_MANS = stepper.1 testservo.1
+man_MANS = dcmotor.1 stepper.1 testservo.1
 
 DISTCLEANFILES = *~ po/*~
 

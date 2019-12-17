@@ -1,5 +1,5 @@
 dnl Every other copy of the package version number gets its value from here
-AC_INIT(libbbmotor, 0.1.2, b.spranger@linutronix.de)
+AC_INIT(libbbmotor, 0.1.3, b.spranger@linutronix.de)
 AM_INIT_AUTOMAKE
 
 dnl create a config.h file (Automake will add -DHAVE_CONFIG_H)
@@ -21,6 +21,7 @@ AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
 dnl Checks for libraries.
+AX_PTHREAD(,AC_MSG_ERROR(Cannot continue: pthread library not found))
 
 dnl Checks for header files.
 AC_HEADER_STDC

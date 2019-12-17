@@ -29,7 +29,6 @@
 #endif
 #define N_(Text) Text
 
-static uint32_t sec_steps [3] = {6, 8, 6};
 static int stop;
 
 static error_t parse_opt (int key, char *arg, struct argp_state *state);
@@ -134,13 +133,10 @@ int main (int argc, char **argv)
 
 	if (want_verbose)
 	{
-		printf (_("%s paraleter list:\n"), argv [0]);
+		printf (_("%s parameter list:\n"), argv [0]);
 		printf (_("Duty: %d ms\n"), duty);
 		printf (_("Priority: %d\n"), prio);
 	}
-
-	/* convert duty to microseconds */
-	duty *= 1000;
 
 	mlockall (MCL_CURRENT | MCL_FUTURE);
 	param.sched_priority = prio;
@@ -169,25 +165,10 @@ int main (int argc, char **argv)
 		goto out;
 	}
 
-	for (i = 1; i < 3; i++)
+	if (motorcape_dcm_init (han, 1))
 	{
-		if (motorcape_stepper_init (han, i, 1000))
-		{
-			perror (_("The stepper initialization failed. Abort."));
-			goto out;
-		}
-
-		if (motorcape_stepper_speed (han, i, 2000))
-		{
-			perror (_("Cannot set stepper A speed. Abort."));
-			goto out;
-		}
-
-		if (motorcape_stepper_dir (han, i, 1))
-		{
-			perror (_("Cannot set stepper A dir. Abort."));
-			goto out;
-		}
+		perror (_("The DC motor initialization failed. Abort."));
+		goto out;
 	}
 
 	if (clock_gettime (CLOCK_MONOTONIC, &next))
@@ -199,38 +180,25 @@ int main (int argc, char **argv)
 	next.tv_sec += 2;
 	next.tv_nsec = 0;
 
+	i = 0;
 	while (!stop)
 	{
 		clock_nanosleep (CLOCK_MONOTONIC, TIMER_ABSTIME, &next, NULL);
 
-		if (motorcape_stepper_steps (han, 1,
-					     sec_steps [next.tv_sec %3]))
+		if (motorcape_dcm_move (han, 1, 0, ++i*10))
 		{
-			perror (_("Stepper A failed to step. Abort."));
+			perror (_("DC motor 1 failed to move. Abort."));
 			goto out;
 		}
 
-		usleep (duty);
-		if (motorcape_stepper_steps (han, 2,
-					     sec_steps [next.tv_sec %3]))
-		{
-			perror (_("Stepper B failed to step. Abort."));
-			goto out;
-		}
 		fprintf (stderr, N_("*"));
 		next.tv_sec++;
+		i %= 100;
 	}
 
-	ret = motorcape_stepper_release (han, 1);
+	ret = motorcape_dcm_release (han, 1);
 	if (ret)
-	{
-		perror (_("Stepper A release failed."));
-		goto out;
-	}
-
-	ret = motorcape_stepper_release (han, 2);
-	if (ret)
-		perror (_("Stepper B release failed."));
+		perror (_("DC motor 1 release failed."));
 
 out:
 	motorcape_close (han);

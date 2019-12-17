@@ -42,13 +42,13 @@ EXPORT int motorcape_servo_init (motorcape han, uint8_t port, uint16_t freq)
 	if (i2c_write_u16 (han->i2c_fd, port, freq))
 		return 1;
 
-	usleep (5000);
+	usleep (GUARD_TIME);
 
 
 	if (i2c_write_u8 (han->i2c_fd, reg, SVM_ENABLE))
 		return -1;
 
-	usleep (5000);
+	usleep (GUARD_TIME);
 
 	return 0;
 }
@@ -73,7 +73,7 @@ EXPORT int motorcape_servo_angle (motorcape han, uint8_t port, uint16_t angle)
 	if (i2c_write_u8 (han->i2c_fd, port, angle))
 		return -1;
 
-	usleep (5000);
+	usleep (GUARD_TIME);
 
 	return 0;
 }

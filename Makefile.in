@@ -91,7 +91,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = stepper$(EXEEXT) testservo$(EXEEXT)
+bin_PROGRAMS = dcmotor$(EXEEXT) stepper$(EXEEXT) testservo$(EXEEXT)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -146,9 +146,9 @@ am__uninstall_files_from_dir = { \
   }
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libbbmotor_la_DEPENDENCIES =
-am_libbbmotor_la_OBJECTS = libbbmotor_la-core.lo libbbmotor_la-gpio.lo \
-	libbbmotor_la-i2c.lo libbbmotor_la-motor.lo \
-	libbbmotor_la-servo.lo
+am_libbbmotor_la_OBJECTS = libbbmotor_la-core.lo libbbmotor_la-dcm.lo \
+	libbbmotor_la-gpio.lo libbbmotor_la-i2c.lo \
+	libbbmotor_la-motor.lo libbbmotor_la-servo.lo
 libbbmotor_la_OBJECTS = $(am_libbbmotor_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -157,6 +157,12 @@ am__v_lt_1 =
 libbbmotor_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libbbmotor_la_CFLAGS) \
 	$(CFLAGS) $(libbbmotor_la_LDFLAGS) $(LDFLAGS) -o $@
+am_dcmotor_OBJECTS = dcmotor-dcmotor.$(OBJEXT)
+dcmotor_OBJECTS = $(am_dcmotor_OBJECTS)
+dcmotor_DEPENDENCIES = libbbmotor.la
+dcmotor_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(dcmotor_CFLAGS) \
+	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 am_stepper_OBJECTS = stepper-stepper.$(OBJEXT)
 stepper_OBJECTS = $(am_stepper_OBJECTS)
 stepper_DEPENDENCIES = libbbmotor.la
@@ -184,7 +190,9 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/libbbmotor_la-core.Plo \
+am__depfiles_remade = ./$(DEPDIR)/dcmotor-dcmotor.Po \
+	./$(DEPDIR)/libbbmotor_la-core.Plo \
+	./$(DEPDIR)/libbbmotor_la-dcm.Plo \
 	./$(DEPDIR)/libbbmotor_la-gpio.Plo \
 	./$(DEPDIR)/libbbmotor_la-i2c.Plo \
 	./$(DEPDIR)/libbbmotor_la-motor.Plo \
@@ -210,10 +218,10 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libbbmotor_la_SOURCES) $(stepper_SOURCES) \
-	$(testservo_SOURCES)
-DIST_SOURCES = $(libbbmotor_la_SOURCES) $(stepper_SOURCES) \
-	$(testservo_SOURCES)
+SOURCES = $(libbbmotor_la_SOURCES) $(dcmotor_SOURCES) \
+	$(stepper_SOURCES) $(testservo_SOURCES)
+DIST_SOURCES = $(libbbmotor_la_SOURCES) $(dcmotor_SOURCES) \
+	$(stepper_SOURCES) $(testservo_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -386,6 +394,9 @@ PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POSUB = @POSUB@
+PTHREAD_CC = @PTHREAD_CC@
+PTHREAD_CFLAGS = @PTHREAD_CFLAGS@
+PTHREAD_LIBS = @PTHREAD_LIBS@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -408,6 +419,7 @@ am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
 am__tar = @am__tar@
 am__untar = @am__untar@
+ax_pthread_config = @ax_pthread_config@
 bindir = @bindir@
 build = @build@
 build_alias = @build_alias@
@@ -452,6 +464,9 @@ top_srcdir = @top_srcdir@
 SUBDIRS = po
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbbmotor.pc
+dcmotor_SOURCES = dcmotor.c dcmotor.1
+dcmotor_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
+dcmotor_LDADD = libbbmotor.la
 stepper_SOURCES = stepper.c stepper.1
 stepper_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
 stepper_LDADD = libbbmotor.la
@@ -459,9 +474,13 @@ testservo_SOURCES = testservo.c testservo.1
 testservo_CFLAGS = -O3 -Wall -Wextra -Werror -g -DLOCALEDIR='"$(localedir)"'
 testservo_LDADD = libbbmotor.la
 lib_LTLIBRARIES = libbbmotor.la
-libbbmotor_la_SOURCES = core.c gpio.c i2c.c motor.c servo.c com.h internal.h
-libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@ -fvisibility=hidden
-libbbmotor_la_LIBADD = @GPIO_LIBS@
+libbbmotor_la_SOURCES = core.c dcm.c gpio.c i2c.c motor.c servo.c com.h \
+	internal.h
+
+libbbmotor_la_CFLAGS = -O2 -Wall -Wextra @GPIO_CFLAGS@ -fvisibility=hidden \
+	@PTHREAD_CFLAGS@
+
+libbbmotor_la_LIBADD = @GPIO_LIBS@ @PTHREAD_LIBS@
 include_HEADERS = bbmotor.h
 
 # 1) If the library source code has changed at all since the last update, then
@@ -476,7 +495,7 @@ libbbmotor_la_LDFLAGS = -version-info 1:0:0
 EXTRA_DIST = ChangeLog-from-git README.md libbbmotor.doxy.in libbbmotor.pc.in \
 	libbbmotor-uninstalled.pc.in
 
-man_MANS = stepper.1 testservo.1
+man_MANS = dcmotor.1 stepper.1 testservo.1
 DISTCLEANFILES = *~ po/*~
 MAINTAINERCLEANFILES = ABOUT-NLS ChangeLog INSTALL Makefile.in aclocal.m4 \
 	compile config.guess config.h.in config.rpath config.sub configure \
@@ -632,6 +651,10 @@ clean-libLTLIBRARIES:
 libbbmotor.la: $(libbbmotor_la_OBJECTS) $(libbbmotor_la_DEPENDENCIES) $(EXTRA_libbbmotor_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libbbmotor_la_LINK) -rpath $(libdir) $(libbbmotor_la_OBJECTS) $(libbbmotor_la_LIBADD) $(LIBS)
 
+dcmotor$(EXEEXT): $(dcmotor_OBJECTS) $(dcmotor_DEPENDENCIES) $(EXTRA_dcmotor_DEPENDENCIES) 
+	@rm -f dcmotor$(EXEEXT)
+	$(AM_V_CCLD)$(dcmotor_LINK) $(dcmotor_OBJECTS) $(dcmotor_LDADD) $(LIBS)
+
 stepper$(EXEEXT): $(stepper_OBJECTS) $(stepper_DEPENDENCIES) $(EXTRA_stepper_DEPENDENCIES) 
 	@rm -f stepper$(EXEEXT)
 	$(AM_V_CCLD)$(stepper_LINK) $(stepper_OBJECTS) $(stepper_LDADD) $(LIBS)
@@ -646,7 +669,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dcmotor-dcmotor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbbmotor_la-core.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbbmotor_la-dcm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbbmotor_la-gpio.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbbmotor_la-i2c.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbbmotor_la-motor.Plo@am__quote@ # am--include-marker
@@ -688,6 +713,13 @@ libbbmotor_la-core.lo: core.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbbmotor_la_CFLAGS) $(CFLAGS) -c -o libbbmotor_la-core.lo `test -f 'core.c' || echo '$(srcdir)/'`core.c
 
+libbbmotor_la-dcm.lo: dcm.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbbmotor_la_CFLAGS) $(CFLAGS) -MT libbbmotor_la-dcm.lo -MD -MP -MF $(DEPDIR)/libbbmotor_la-dcm.Tpo -c -o libbbmotor_la-dcm.lo `test -f 'dcm.c' || echo '$(srcdir)/'`dcm.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbbmotor_la-dcm.Tpo $(DEPDIR)/libbbmotor_la-dcm.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dcm.c' object='libbbmotor_la-dcm.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbbmotor_la_CFLAGS) $(CFLAGS) -c -o libbbmotor_la-dcm.lo `test -f 'dcm.c' || echo '$(srcdir)/'`dcm.c
+
 libbbmotor_la-gpio.lo: gpio.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbbmotor_la_CFLAGS) $(CFLAGS) -MT libbbmotor_la-gpio.lo -MD -MP -MF $(DEPDIR)/libbbmotor_la-gpio.Tpo -c -o libbbmotor_la-gpio.lo `test -f 'gpio.c' || echo '$(srcdir)/'`gpio.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbbmotor_la-gpio.Tpo $(DEPDIR)/libbbmotor_la-gpio.Plo
@@ -715,6 +747,20 @@ libbbmotor_la-servo.lo: servo.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='servo.c' object='libbbmotor_la-servo.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbbmotor_la_CFLAGS) $(CFLAGS) -c -o libbbmotor_la-servo.lo `test -f 'servo.c' || echo '$(srcdir)/'`servo.c
+
+dcmotor-dcmotor.o: dcmotor.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(dcmotor_CFLAGS) $(CFLAGS) -MT dcmotor-dcmotor.o -MD -MP -MF $(DEPDIR)/dcmotor-dcmotor.Tpo -c -o dcmotor-dcmotor.o `test -f 'dcmotor.c' || echo '$(srcdir)/'`dcmotor.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/dcmotor-dcmotor.Tpo $(DEPDIR)/dcmotor-dcmotor.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dcmotor.c' object='dcmotor-dcmotor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(dcmotor_CFLAGS) $(CFLAGS) -c -o dcmotor-dcmotor.o `test -f 'dcmotor.c' || echo '$(srcdir)/'`dcmotor.c
+
+dcmotor-dcmotor.obj: dcmotor.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(dcmotor_CFLAGS) $(CFLAGS) -MT dcmotor-dcmotor.obj -MD -MP -MF $(DEPDIR)/dcmotor-dcmotor.Tpo -c -o dcmotor-dcmotor.obj `if test -f 'dcmotor.c'; then $(CYGPATH_W) 'dcmotor.c'; else $(CYGPATH_W) '$(srcdir)/dcmotor.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/dcmotor-dcmotor.Tpo $(DEPDIR)/dcmotor-dcmotor.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dcmotor.c' object='dcmotor-dcmotor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(dcmotor_CFLAGS) $(CFLAGS) -c -o dcmotor-dcmotor.obj `if test -f 'dcmotor.c'; then $(CYGPATH_W) 'dcmotor.c'; else $(CYGPATH_W) '$(srcdir)/dcmotor.c'; fi`
 
 stepper-stepper.o: stepper.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(stepper_CFLAGS) $(CFLAGS) -MT stepper-stepper.o -MD -MP -MF $(DEPDIR)/stepper-stepper.Tpo -c -o stepper-stepper.o `test -f 'stepper.c' || echo '$(srcdir)/'`stepper.c
@@ -1188,7 +1234,9 @@ clean-am: clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
 
 distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-		-rm -f ./$(DEPDIR)/libbbmotor_la-core.Plo
+		-rm -f ./$(DEPDIR)/dcmotor-dcmotor.Po
+	-rm -f ./$(DEPDIR)/libbbmotor_la-core.Plo
+	-rm -f ./$(DEPDIR)/libbbmotor_la-dcm.Plo
 	-rm -f ./$(DEPDIR)/libbbmotor_la-gpio.Plo
 	-rm -f ./$(DEPDIR)/libbbmotor_la-i2c.Plo
 	-rm -f ./$(DEPDIR)/libbbmotor_la-motor.Plo
@@ -1243,7 +1291,9 @@ installcheck-am:
 maintainer-clean: maintainer-clean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-		-rm -f ./$(DEPDIR)/libbbmotor_la-core.Plo
+		-rm -f ./$(DEPDIR)/dcmotor-dcmotor.Po
+	-rm -f ./$(DEPDIR)/libbbmotor_la-core.Plo
+	-rm -f ./$(DEPDIR)/libbbmotor_la-dcm.Plo
 	-rm -f ./$(DEPDIR)/libbbmotor_la-gpio.Plo
 	-rm -f ./$(DEPDIR)/libbbmotor_la-i2c.Plo
 	-rm -f ./$(DEPDIR)/libbbmotor_la-motor.Plo
