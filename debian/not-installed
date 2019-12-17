@@ -1,0 +1,2 @@
+# ignore .la files
+usr/lib/*/lib*.la

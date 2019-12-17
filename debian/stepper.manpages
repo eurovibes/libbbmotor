@@ -1,1 +1,3 @@
-stepper.1 testservo.1
+usr/share/man/man1/dcmotor.1
+usr/share/man/man1/stepper.1
+usr/share/man/man1/testservo.1
