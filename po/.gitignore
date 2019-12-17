@@ -6,3 +6,5 @@ Makefile.in.in
 Makevars.template
 POTFILES
 Rules-quot
+libbbmotor.pot
+stamp-po
