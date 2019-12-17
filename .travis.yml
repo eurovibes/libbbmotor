@@ -1,7 +1,7 @@
 dist: bionic
 
 before_install:
-  - sudo apt-get install -y autopoint doxygen libgpiod-dev
+  - sudo apt-get install -y autoconf-archive autopoint doxygen libgpiod-dev
 addons:
   apt:
     update: true
