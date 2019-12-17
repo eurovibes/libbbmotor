@@ -1,11 +1,16 @@
 libbbmotor.so.1 libbbmotor1 #MINVER#
 * Build-Depends-Package: libbbmotor-dev
  motorcape_close@Base 0.1.0
+ motorcape_dcm_init@Base 0.1.3
+ motorcape_dcm_move@Base 0.1.3
+ motorcape_dcm_release@Base 0.1.3
+ motorcape_dcm_stop@Base 0.1.3
  motorcape_init@Base 0.1.0
  motorcape_servo_angle@Base 0.1.1
  motorcape_servo_init@Base 0.1.1
  motorcape_set_pwm@Base 0.1.0
  motorcape_stepper_dir@Base 0.1.0
  motorcape_stepper_init@Base 0.1.0
+ motorcape_stepper_release@Base 0.1.3
  motorcape_stepper_speed@Base 0.1.0
  motorcape_stepper_steps@Base 0.1.0
