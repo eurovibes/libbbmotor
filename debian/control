@@ -2,7 +2,7 @@ Source: libbbmotor
 Priority: optional
 Maintainer: Benedikt Spranger <b.spranger@linutronix.de>
 Build-Depends: debhelper (>= 12.0.0), autoconf-archive, libgpiod-dev, pkg-config
-Standards-Version: 4.4.0
+Standards-Version: 4.4.1
 Rules-Requires-Root: no
 Homepage: https://github.com/eurovibes/libbbmotor
 Vcs-Git: https://github.com/eurovibes/libbbmotor.git
